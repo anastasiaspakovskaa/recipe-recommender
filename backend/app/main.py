@@ -2,8 +2,11 @@ from fastapi import FastAPI
 from sqlalchemy import text
 
 from .database import Base, engine
-#from .models.user import User
-
+from .models.user import User
+from .models.ingredient import Ingredient
+from .models.recipe import Recipe
+from .models.recipe_ingredient import RecipeIngredient
+from .models.user_ingredient import UserIngredient
 
 app = FastAPI(title="Recipe Recommendation API")
 
