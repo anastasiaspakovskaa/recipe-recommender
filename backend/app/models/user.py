@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 
 from sqlalchemy import DateTime, String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ..database import Base
 
@@ -23,4 +23,7 @@ class User(Base):
         DateTime,
         default=datetime.now(timezone.utc),
         nullable=False
+    )
+    user_ingredients: Mapped[list["UserIngredient"]] = relationship(
+        back_populates="user"
     )

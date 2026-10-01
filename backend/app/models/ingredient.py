@@ -1,5 +1,5 @@
 from sqlalchemy import String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ..database import Base
 
@@ -12,4 +12,10 @@ class Ingredient(Base):
         String(100),
         unique=True,
         nullable=False
+    )
+    recipe_ingredients: Mapped[list["RecipeIngredient"]] = relationship(
+        back_populates="ingredient"
+    )
+    user_ingredients: Mapped[list["UserIngredient"]] = relationship(
+        back_populates="ingredient"
     )

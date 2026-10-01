@@ -1,5 +1,5 @@
 from sqlalchemy import Float, ForeignKey, String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ..database import Base
 
@@ -20,10 +20,19 @@ class UserIngredient(Base):
     )
 
     quantity: Mapped[float | None] = mapped_column(
+        Float, 
         nullable=True
     )
 
     unit: Mapped[str | None] = mapped_column(
         String(30),
         nullable=True
+    )
+
+    user: Mapped["User"] = relationship(
+        back_populates="user_ingredients"
+    )
+
+    ingredient: Mapped["Ingredient"] = relationship(
+        back_populates="user_ingredients"
     )
