@@ -7,6 +7,7 @@ from .models.user import User
 from .schemas.user import UserCreate, UserResponse
 from .core.security import hash_password, create_access_token, verify_password
 from .schemas.auth import LoginRequest, TokenResponse
+from .core.dependencies import get_current_user
 
 app = FastAPI(title="Recipe Recommendation API")
 
@@ -83,3 +84,10 @@ def login(
         "access_token": access_token,
         "token_type": "bearer"
     }
+
+
+@app.get("/users/me", response_model=UserResponse)
+def get_me(
+    current_user: User = Depends(get_current_user),
+):
+    return current_user
