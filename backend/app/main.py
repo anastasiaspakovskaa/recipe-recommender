@@ -8,8 +8,10 @@ from .schemas.user import UserCreate, UserResponse
 from .core.security import hash_password, create_access_token, verify_password
 from .schemas.auth import LoginRequest, TokenResponse
 from .core.dependencies import get_current_user
+from .routers.ingredients import router as ingredients_router
 
 app = FastAPI(title="Recipe Recommendation API")
+app.include_router(ingredients_router)
 
 @app.get("/health")
 def health_check():
