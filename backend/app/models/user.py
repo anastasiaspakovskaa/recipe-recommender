@@ -21,7 +21,7 @@ class User(Base):
     )
     created_at: Mapped[datetime] = mapped_column(
         DateTime,
-        default=datetime.now(timezone.utc),
+        default=lambda: datetime.now(timezone.utc),
         nullable=False
     )
     user_ingredients: Mapped[list["UserIngredient"]] = relationship(
