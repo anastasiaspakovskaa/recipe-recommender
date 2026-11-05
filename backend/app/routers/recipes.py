@@ -152,3 +152,26 @@ def add_ingredient_to_recipe(
     db.refresh(recipe_ingredient)
 
     return recipe_ingredient
+
+
+@router.get(
+    "/{recipe_id}/ingredients",
+    response_model=list[RecipeIngredientResponse],
+)
+def get_recipe_ingredients(
+    recipe_id: int,
+    db: Session = Depends(get_db),
+):
+    recipe = db.get(Recipe, recipe_id)
+
+    if recipe is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Recipe not found",
+        )
+
+    return db.scalars(
+        select(RecipeIngredient)
+        .where(RecipeIngredient.recipe_id == recipe_id)
+        .order_by(RecipeIngredient.id)
+    ).all()

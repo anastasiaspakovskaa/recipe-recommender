@@ -32,3 +32,40 @@ def test_add_ingredient_to_recipe(client):
     assert response.json()["ingredient_id"] == ingredient_id
     assert response.json()["quantity"] == 200
     assert response.json()["unit"] == "g"
+
+
+def test_get_recipe_ingredients(client):
+    ingredient_response = client.post(
+        "/ingredients",
+        json={"name": "Flour"},
+    )
+    ingredient_id = ingredient_response.json()["id"]
+
+    recipe_response = client.post(
+        "/recipes",
+        json={
+            "name": "Pancakes",
+            "description": "Simple pancakes",
+            "instructions": "Mix and fry.",
+            "calories": 300,
+        },
+    )
+    recipe_id = recipe_response.json()["id"]
+
+    client.post(
+        f"/recipes/{recipe_id}/ingredients",
+        json={
+            "ingredient_id": ingredient_id,
+            "quantity": 200,
+            "unit": "g",
+        },
+    )
+
+    response = client.get(
+        f"/recipes/{recipe_id}/ingredients"
+    )
+
+    assert response.status_code == 200
+    assert len(response.json()) == 1
+    assert response.json()[0]["ingredient_id"] == ingredient_id
+    assert response.json()[0]["quantity"] == 200
