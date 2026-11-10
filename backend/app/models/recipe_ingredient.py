@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey, String, Float
+from sqlalchemy import ForeignKey, String, Float, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ..database import Base
@@ -6,6 +6,14 @@ from ..database import Base
 
 class RecipeIngredient(Base):
     __tablename__ = "recipe_ingredients"
+
+    __table_args__ = (
+        UniqueConstraint(
+            "recipe_id",
+            "ingredient_id",
+            name="uq_recipe_ingredient",
+        ),
+    )
 
     id: Mapped[int] = mapped_column(primary_key=True)
 

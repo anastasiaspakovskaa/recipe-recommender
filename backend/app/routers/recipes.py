@@ -140,6 +140,19 @@ def add_ingredient_to_recipe(
             detail="Ingredient not found",
         )
 
+    existing_association = db.scalar(
+    select(RecipeIngredient).where(
+        RecipeIngredient.recipe_id == recipe_id,
+        RecipeIngredient.ingredient_id == data.ingredient_id,
+        )
+    )
+
+    if existing_association:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Ingredient already exists in this recipe",
+        )
+
     recipe_ingredient = RecipeIngredient(
         recipe_id=recipe_id,
         ingredient_id=data.ingredient_id,
